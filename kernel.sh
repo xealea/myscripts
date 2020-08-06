@@ -233,12 +233,6 @@ build_kernel() {
 			OBJDUMP=llvm-objdump \
 			STRIP=llvm-strip
 		)
-	elif [ $COMPILER = "gcc" ]
-	then
-		MAKE+=(
-			CROSS_COMPILE_ARM32=arm-eabi- \
-			CROSS_COMPILE=aarch64-elf- 
-		)
 	fi
 	
 	if [ $SILENCE = "1" ]
@@ -247,7 +241,7 @@ build_kernel() {
 	fi
 
 	msg "|| Started Compilation ||"
-	make -j"$PROCS" O=out 
+	make -j"$PROCS" O=out CROSS_COMPILE=aarch64-elf- CROSS_COMPILE_ARM32=arm-eabi-
 
 		BUILD_END=$(date +"%s")
 		DIFF=$((BUILD_END - BUILD_START))
