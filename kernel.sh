@@ -241,7 +241,8 @@ build_kernel() {
 	fi
 
 	msg "|| Started Compilation ||"
-	make -j"$PROCS" O=out CROSS_COMPILE=aarch64-elf- CROSS_COMPILE_ARM32=arm-eabi-
+	export CROSS_COMPILE_ARM32=$GCC32_DIR/bin/arm-eabi-
+	make -j"$PROCS" O=out CROSS_COMPILE=aarch64-elf-
 
 		BUILD_END=$(date +"%s")
 		DIFF=$((BUILD_END - BUILD_START))
