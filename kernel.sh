@@ -36,21 +36,21 @@ err() {
 KERNEL_DIR=$PWD
 
 # The name of the Kernel, to name the ZIP
-ZIPNAME="azure-dtbo"
+ZIPNAME="SiLonT-TEST"
 
 # The name of the device for which the kernel is built
-MODEL="Redmi Note 7 Pro"
+MODEL="Redmi Note 5 Pro"
 
 # The codename of the device
-DEVICE="violet"
+DEVICE="whyred"
 
 # The defconfig which should be used. Get it from config.gz from
 # your device or check source
-DEFCONFIG=vendor/violet-perf_defconfig
+DEFCONFIG=whyred_defconfig
 
 # Specify compiler. 
 # 'clang' or 'gcc'
-COMPILER=clang
+COMPILER=gcc
 
 # Clean source prior building. 1 is NO(default) | 0 is YES
 INCREMENTAL=1
@@ -60,7 +60,7 @@ PTTG=1
 	if [ $PTTG = 1 ]
 	then
 		# Set Telegram Chat ID
-		CHATID="-1001231303646"
+		CHATID="-1001493260868"
 	fi
 
 # Generate a full DEFCONFIG prior building. 1 is YES | 0 is NO(default)
@@ -68,7 +68,7 @@ DEF_REG=0
 
 # Build dtbo.img (select this only if your source has support to building dtbo.img)
 # 1 is YES | 0 is NO(default)
-BUILD_DTBO=1
+BUILD_DTBO=0
 
 # Sign the zipfile
 # 1 is YES | 0 is NO
@@ -90,7 +90,7 @@ LOG_DEBUG=0
 
 ## Set defaults first
 DISTRO=$(cat /etc/issue)
-KBUILD_BUILD_HOST=$(uname -a | awk '{print $2}')
+KBUILD_BUILD_HOST=Laptop-Sangar
 CI_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 export KBUILD_BUILD_HOST CI_BRANCH
 
@@ -137,17 +137,14 @@ DATE=$(TZ=Asia/Jakarta date +"%Y%m%d-%T")
 	elif [ $COMPILER = "gcc" ]
 	then
 		msg "|| Cloning GCC 9.3.0 baremetal ||"
-		git clone --depth=50 https://github.com/arter97/arm64-gcc.git gcc64
-		cd gcc64 || exit
-		git reset --hard 811a3bc6b40ad924cd1a24a481b6ac5d9227ff7e
-		cd $KERNEL_DIR || exit
+		git clone --depth=1 https://github.com/arter97/arm64-gcc.git gcc64
 		git clone --depth=1 https://github.com/arter97/arm32-gcc.git gcc32
 		GCC64_DIR=$KERNEL_DIR/gcc64
 		GCC32_DIR=$KERNEL_DIR/gcc32
 	fi
 
 	msg "|| Cloning Anykernel ||"
-	git clone --depth 1 --no-single-branch https://github.com/Panchajanya1999/AnyKernel2.git -b $DEVICE
+	git clone --depth 1 --no-single-branch https://github.com/Reinazhard/AnyKernel3.git -b master
 	msg "|| Cloning libufdt ||"
 	git clone https://android.googlesource.com/platform/system/libufdt "$KERNEL_DIR"/scripts/ufdt/libufdt
 }
@@ -155,7 +152,7 @@ DATE=$(TZ=Asia/Jakarta date +"%Y%m%d-%T")
 ##------------------------------------------------------##
 
 exports() {
-	export KBUILD_BUILD_USER="panchajanya"
+	export KBUILD_BUILD_USER="reina"
 	export ARCH=arm64
 	export SUBARCH=arm64
 
@@ -290,7 +287,7 @@ gen_zip() {
 	then
 		mv "$KERNEL_DIR"/out/arch/arm64/boot/dtbo.img AnyKernel2/dtbo.img
 	fi
-	cd AnyKernel2 || exit
+	cd AnyKernel3 || exit
 	zip -r9 $ZIPNAME-$DEVICE-"$DATE" * -x .git README.md
 
 	## Prepare a final zip variable
