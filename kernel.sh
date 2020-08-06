@@ -253,7 +253,7 @@ build_kernel() {
 	make -j"$PROCS" O=out \
 		NM=llvm-nm \
 		OBJCOPY=llvm-objcopy \
-		LD=ld.lld "${MAKE[@]}" 2>&1 | tee error.log
+		"${MAKE[@]}" 2>&1 | tee error.log
 
 		BUILD_END=$(date +"%s")
 		DIFF=$((BUILD_END - BUILD_START))
