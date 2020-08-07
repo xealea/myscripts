@@ -281,20 +281,6 @@ gen_zip() {
 
 	## Prepare a final zip variable
 	ZIP_FINAL="$ZIPNAME-$DEVICE-$DATE.zip"
-
-	if [ $SIGN = 1 ]
-	then
-		## Sign the zip before sending it to telegram
-		if [ "$PTTG" = 1 ]
- 		then
- 			msg "|| Signing Zip ||"
- 			tg_post_msg "<code>Signing Zip file with AOSP keys..</code>" "$CHATID"
- 		fi
-		curl -sLo zipsigner-3.0.jar https://raw.githubusercontent.com/baalajimaestro/AnyKernel2/master/zipsigner-3.0.jar
-		java -jar zipsigner-3.0.jar $ZIPNAME-$DEVICE-"$DATE".zip "$ZIP_FINAL"-signed.zip
-		ZIP_FINAL="$ZIP_FINAL-signed.zip"
-	fi
-
 	if [ "$PTTG" = 1 ]
  	then
 		tg_post_build "$ZIP_FINAL" "$CHATID" "Build took : $((DIFF / 60)) minute(s) and $((DIFF % 60)) second(s)"
