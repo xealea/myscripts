@@ -72,7 +72,7 @@ BUILD_DTBO=0
 
 # Sign the zipfile
 # 1 is YES | 0 is NO
-SIGN=1
+SIGN=0
 
 # Silence the compilation
 # 1 is YES(default) | 0 is NO
