@@ -92,7 +92,7 @@ LOG_DEBUG=0
 DISTRO=$(cat /etc/issue)
 KBUILD_BUILD_HOST=Laptop-Sangar
 CI_BRANCH=$(git rev-parse --abbrev-ref HEAD)
-token="1176154929:AAEwBruEeSm92J2VgHGrLuJroL4oKkd0j-k"
+token=$TELEGRAM_TOKEN
 export KBUILD_BUILD_HOST CI_BRANCH
 
 ## Check for CI
