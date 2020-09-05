@@ -129,12 +129,12 @@ DATE=$(TZ=Asia/Jakarta date +"%Y%m%d-%T")
  clone() {
 	echo " "
 		msg "|| Cloning GCC 9.3.0 baremetal ||"
-		git clone --depth=1 https://github.com/arter97/arm64-gcc.git gcc64
-		git clone --depth=1 https://github.com/arter97/arm32-gcc.git gcc32
+		git clone --depth=1 https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9/ -b ndk-r19 gcc64
+		git clone --depth=1 https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/ -b ndk-r19 gcc32 
 		GCC64_DIR=$KERNEL_DIR/gcc64
 		GCC32_DIR=$KERNEL_DIR/gcc32
 
-	msg "|| Cloning Anykernel ||"
+	msg "|| Cloning Anykernel ||" 
 	git clone --depth 1 --no-single-branch https://github.com/VISakura/AnyKernel3 -b master-x00td
 }
 
@@ -144,8 +144,8 @@ exports() {
 	export KBUILD_BUILD_USER="Hazu"
 	export ARCH=arm64
 	export SUBARCH=arm64
-
-	KBUILD_COMPILER_STRING=$("$GCC64_DIR"/bin/aarch64-elf-gcc --version | head -n 1)
+        
+	KBUILD_COMPILER_STRING=$("$GCC64_DIR"/bin/aarch64-linux-android-gcc --version | head -n 1)
 	PATH=$GCC64_DIR/bin/:$GCC32_DIR/bin/:/usr/bin:$PATH
 
 	export PATH KBUILD_COMPILER_STRING
@@ -208,8 +208,8 @@ build_kernel() {
 	if [ $COMPILER = "clang" ]
 	then
 		MAKE+=(
-			CROSS_COMPILE=aarch64-linux-gnu- \
-			CROSS_COMPILE_ARM32=arm-linux-gnueabi- \
+			CROSS_COMPILE=aarch64-linux-android- \
+			CROSS_COMPILE_ARM32=arm-linux-androideabi-  \
 			CC=clang \
 			AR=llvm-ar \
 			OBJDUMP=llvm-objdump \
