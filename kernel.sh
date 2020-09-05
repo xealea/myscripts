@@ -33,7 +33,7 @@ err() {
 ##----------Basic Informations, COMPULSORY--------------##
 
 # The defult directory where the kernel should be placed
-KERNEL_DIR=$PWD
+KERNEL_DIR="$(pwd)"
 
 # The name of the Kernel, to name the ZIP
 ZIPNAME="Weebs-KErnel"
@@ -223,8 +223,8 @@ build_kernel() {
 	fi
 
 	msg "|| Started Compilation ||"
-	export CROSS_COMPILE_ARM32=$GCC32_DIR/bin/arm-eabi-
-	make -j"$PROCS" O=out CROSS_COMPILE=aarch64-elf-
+	export CROSS_COMPILE_ARM32=$GCC32_DIR/bin/arm-linux-androideabi-
+	make -j"$PROCS" O=out CROSS_COMPILE=aarch64-linux-android-
 
 		BUILD_END=$(date +"%s")
 		DIFF=$((BUILD_END - BUILD_START))
