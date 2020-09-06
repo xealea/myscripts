@@ -132,8 +132,12 @@ DATE=$(TZ=Asia/Jakarta date +"%Y%m%d-%T")
 		git clone --depth=1 https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9/ -b ndk-r19 $KERNEL_DIR/gcc64
 		git clone --depth=1 https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/ -b ndk-r19  $KERNEL_DIR/gcc32
 		GCC64_DIR=$KERNEL_DIR/gcc64
+        cd $GCC64_DIR && ls
+        cd $GCC64_DIR/bin && ls
 		GCC32_DIR=$KERNEL_DIR/gcc32
-
+        cd $GCC32_DIR && ls
+        cd $GCC32_DIR/bin && ls
+        cd $KERNEL_DIR
 	msg "|| Cloning Anykernel ||" 
 	git clone --depth 1 --no-single-branch https://github.com/VISakura/AnyKernel3 -b master-x00td
 }
@@ -145,9 +149,10 @@ exports() {
 	export ARCH=arm64
 	export SUBARCH=arm64
         
+	KBUILD_COMPILER_STRING=$("$GCC64_DIR"/bin/aarch64-linux-android-gcc --version | head -n 1)
 	PATH=$GCC64_DIR/bin/:$GCC32_DIR/bin/:/usr/bin:$PATH
 
-	export PATH
+	export PATH KBUILD_COMPILER_STRING
 	export BOT_MSG_URL="https://api.telegram.org/bot$token/sendMessage"
 	export BOT_BUILD_URL="https://api.telegram.org/bot$token/sendDocument"
 	PROCS=$(nproc --all)
