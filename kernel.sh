@@ -129,15 +129,11 @@ DATE=$(TZ=Asia/Jakarta date +"%Y%m%d-%T")
  clone() {
 	echo " "
 		msg "|| Cloning GCC 9.3.0 baremetal ||"
-		git clone --depth=1 https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9/ -b ndk-r19 $KERNEL_DIR/gcc64
-		git clone --depth=1 https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/ -b ndk-r19  $KERNEL_DIR/gcc32
+		git clone --depth=1 https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/ -b ndk-r19 $KERNEL_DIR/gcc64
+		git clone --depth=1 https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9/ -b ndk-r19  $KERNEL_DIR/gcc32
 		GCC64_DIR=$KERNEL_DIR/gcc64
-        cd $GCC64_DIR && ls
-        cd $GCC64_DIR/bin && ls
 		GCC32_DIR=$KERNEL_DIR/gcc32
-        cd $GCC32_DIR && ls
-        cd $GCC32_DIR/bin && ls
-        cd $KERNEL_DIR
+
 	msg "|| Cloning Anykernel ||" 
 	git clone --depth 1 --no-single-branch https://github.com/VISakura/AnyKernel3 -b master-x00td
 }
