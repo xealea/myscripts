@@ -129,8 +129,8 @@ DATE=$(TZ=Asia/Jakarta date +"%Y%m%d-%T")
  clone() {
 	echo " "
 		msg "|| Cloning GCC 9.3.0 baremetal ||"
-		git clone --depth=1 https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/ -b ndk-r19 $KERNEL_DIR/gcc64
-		git clone --depth=1 https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9/ -b ndk-r19  $KERNEL_DIR/gcc32
+		git clone --depth=1 https://github.com/chips-project/priv-toolchains/ -b non-elf/gcc-9.2.0/arm64 $KERNEL_DIR/gcc64
+		git clone --depth=1 https://github.com/chips-project/priv-toolchains/ -b non-elf/gcc-9.2.0/arm  $KERNEL_DIR/gcc32
 		GCC64_DIR=$KERNEL_DIR/gcc64
 		GCC32_DIR=$KERNEL_DIR/gcc32
 
@@ -147,7 +147,7 @@ exports() {
 	export ARCH=arm64
 	export SUBARCH=arm64
         
-	KBUILD_COMPILER_STRING=$("$GCC64_DIR"/bin/aarch64-linux-android-gcc --version | head -n 1)
+	KBUILD_COMPILER_STRING=$("$GCC64_DIR"/bin/aarch64-linux-gnu-gcc --version | head -n 1)
 	PATH=$GCC64_DIR/bin/:$GCC32_DIR/bin/:/usr/bin:$PATH
 
 	export PATH KBUILD_COMPILER_STRING
@@ -210,8 +210,8 @@ build_kernel() {
 	if [ $COMPILER = "clang" ]
 	then
 		MAKE+=(
-			CROSS_COMPILE=aarch64-linux-android- \
-			CROSS_COMPILE_ARM32=arm-linux-androideabi-  \
+			CROSS_COMPILE=aarch64-linux-gnu- \
+			CROSS_COMPILE_ARM32=arm-linux-gnueabi-  \
 			CC=clang \
 			AR=llvm-ar \
 			OBJDUMP=llvm-objdump \
@@ -225,8 +225,8 @@ build_kernel() {
 	fi
 
 	msg "|| Started Compilation ||"
-	export CROSS_COMPILE_ARM32=$GCC32_DIR/bin/arm-linux-androideabi-
-	make -j"$PROCS" O=out CROSS_COMPILE=aarch64-linux-android-
+	export CROSS_COMPILE_ARM32=$GCC32_DIR/bin/arm-linux-gnueabi-
+	make -j"$PROCS" O=out CROSS_COMPILE=aarch64-linux-gnu-
 
 		BUILD_END=$(date +"%s")
 		DIFF=$((BUILD_END - BUILD_START))
