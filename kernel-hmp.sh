@@ -147,7 +147,7 @@ exports() {
 	export ARCH=arm64
 	export SUBARCH=arm64
         
-	KBUILD_COMPILER_STRING=$("$GCC64_DIR"/bin/aarch64-linux-gnu-gcc --version | head -n 1)
+	KBUILD_COMPILER_STRING=$("$GCC64_DIR"/bin/aarch64-linux-android-gcc --version | head -n 1)
 	PATH=$GCC64_DIR/bin/:$GCC32_DIR/bin/:/usr/bin:$PATH
 
 	export PATH KBUILD_COMPILER_STRING
@@ -225,8 +225,8 @@ build_kernel() {
 	fi
 
 	msg "|| Started Compilation ||"
-	export CROSS_COMPILE_ARM32=$GCC32_DIR/bin/arm-linux-gnueabi-
-	make -j"$PROCS" O=out CROSS_COMPILE=aarch64-linux-gnu-
+	export CROSS_COMPILE_ARM32=$GCC32_DIR/bin/arm-linux-androideabi-
+	make -j"$PROCS" O=out CROSS_COMPILE=aarch64-linux-android-
 
 		BUILD_END=$(date +"%s")
 		DIFF=$((BUILD_END - BUILD_START))
