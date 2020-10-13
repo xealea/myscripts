@@ -129,8 +129,8 @@ DATE=$(TZ=Asia/Jakarta date +"%Y%m%d-%T")
  clone() {
 	echo " "
 		msg "|| Cloning GCC 9.3.0 baremetal ||"
-		git clone --depth=1 https://github.com/chips-project/priv-toolchains/ -b non-elf/gcc-10.0.0/arm64 $KERNEL_DIR/gcc64
-		git clone --depth=1 https://github.com/chips-project/priv-toolchains/ -b non-elf/gcc-10.0.0/arm  $KERNEL_DIR/gcc32
+		git clone --depth=1 https://github.com/chips-project/priv-toolchains/ -b non-elf/gcc-9.2.0/arm64 $KERNEL_DIR/gcc64
+		git clone --depth=1 https://github.com/chips-project/priv-toolchains/ -b non-elf/gcc-9.2.0/arm  $KERNEL_DIR/gcc32
 		GCC64_DIR=$KERNEL_DIR/gcc64
 		GCC32_DIR=$KERNEL_DIR/gcc32
 
