@@ -42,11 +42,11 @@ ZIPNAME="NAKANAIDE-HMP"
 MODEL="Asus Max Pro M1"
 
 # The codename of the device
-DEVICE="X00T"
+DEVICE="X00TD"
 
 # The defconfig which should be used. Get it from config.gz from
 # your device or check source
-DEFCONFIG=X00TD_defconfig
+DEFCONFIG=X00T_defconfig
 
 # Specify compiler. 
 # 'clang' or 'gcc'
