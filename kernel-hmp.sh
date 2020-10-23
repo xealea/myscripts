@@ -36,7 +36,7 @@ err() {
 KERNEL_DIR="$(pwd)"
 
 # The name of the Kernel, to name the ZIP
-ZIPNAME="FLYING-HMP"
+ZIPNAME="SATISFIED-HMP"
 
 # The name of the device for which the kernel is built
 MODEL="Asus Max Pro M1"
