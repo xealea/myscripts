@@ -160,7 +160,7 @@ exports() {
 ##---------------------------------------------------------##
 
 tg_post_msg() {
-	curl -s -X POST "$BOT_MSG_URL" -d chat_id="-1001319238454" \
+	curl -s -X POST "$BOT_MSG_URL" -d chat_id="-1001161055876" \
 	-d "disable_web_page_preview=true" \
 	-d "parse_mode=html" \
 	-d text="$1"
