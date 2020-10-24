@@ -27,7 +27,7 @@ ARG3=$3 #Build should be pushed or not [PUSH / NOPUSH]
 DATE=$(TZ=Asia/Jakarta date +"%Y%m%d-%T")
 export ZIPNAME="NOELE" #Specifies the name of kernel
 #We should fetch the latest clang build from android_googlesource
-export CLANG_URL=https://kdrag0n.dev/files/redirector/proton_clang-latest.tar.zst
+export CLANG_URL=https://github.com/kdrag0n/proton-clang
 
 ##----------------------------------------------------##
 
