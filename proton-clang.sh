@@ -210,12 +210,12 @@ function check_img {
 ##--------------------------------------------------------------##
 
 function gen_zip {
-	mv $KERNEL_DIR/out/arch/arm64/boot/Image.gz-dtb AnyKernel2/Image.gz-dtb
+	mv $KERNEL_DIR/out/arch/arm64/boot/Image.gz-dtb AnyKernel3/Image.gz-dtb
 	if [ $BUILD_DTBO = 1 ] 
 	 then
-		mv $KERNEL_DIR/out/arch/arm64/boot/dtbo.img AnyKernel2/dtbo.img
+		mv $KERNEL_DIR/out/arch/arm64/boot/dtbo.img AnyKernel3/dtbo.img
 	fi
-	cd AnyKernel2
+	cd AnyKernel3
 	zip -r9 $ZIPNAME-$ARG1-$DATE * -x .git README.md
 	MD5CHECK=$(md5sum $ZIPNAME-$ARG1-$DATE.zip | cut -d' ' -f1)
 	tg_post_build $ZIPNAME* "$CHATID" "Build took : $((DIFF / 60)) minute(s) and $((DIFF % 60)) second(s) | MD5 Checksum : <code>$MD5CHECK</code>"
