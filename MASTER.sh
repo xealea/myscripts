@@ -36,7 +36,7 @@ err() {
 KERNEL_DIR="$(pwd)"
 
 # The name of the Kernel, to name the ZIP
-ZIPNAME="RAISE-A-WEEK"
+ZIPNAME="Chamemilo-Tea"
 
 # The name of the device for which the kernel is built
 MODEL="Asus Max Pro M1"
@@ -46,7 +46,7 @@ DEVICE="X00TD"
 
 # The defconfig which should be used. Get it from config.gz from
 # your device or check source
-DEFCONFIG=X00T_defconfig
+DEFCONFIG=Tea_defconfig
 
 # Specify compiler. 
 # 'clang' or 'gcc'
@@ -90,7 +90,7 @@ LOG_DEBUG=0
 
 ## Set defaults first
 DISTRO=$(cat /etc/issue)
-KBUILD_BUILD_HOST=VISakura-G40
+KBUILD_BUILD_HOST=Tea-Kernel
 CI_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 token=$TELEGRAM_TOKEN
 export KBUILD_BUILD_HOST CI_BRANCH
@@ -107,7 +107,7 @@ then
 	if [ -n "$DRONE" ]
 	then
 		export KBUILD_BUILD_VERSION=$DRONE_BUILD_NUMBER
-		export KBUILD_BUILD_HOST=VISakura-G40
+		export KBUILD_BUILD_HOST=Tea-Kernel
 		export CI_BRANCH=$DRONE_BRANCH
 	else
 		echo "Not presetting Build Version"
@@ -135,7 +135,7 @@ DATE=$(TZ=Asia/Jakarta date +"%Y%m%d-%T")
 		GCC32_DIR=$KERNEL_DIR/gcc32
 
 	msg "|| Cloning Anykernel ||" 
-	git clone --depth 1 --no-single-branch https://github.com/VISakura/AnyKernel3 -b master-x00td
+	git clone --depth 1 --no-single-branch https://github.com/Takanashi-Hikari/AnyKernel3 -b master-x00td
 	cp -af AnyKernel3/anykernel-real.sh AnyKernel3/anykernel.sh
 	sed -i "s/kernel.string=.*/kernel.string=$ZIPNAME by Hazukashio/g" AnyKernel3/anykernel.sh
 }
@@ -143,7 +143,7 @@ DATE=$(TZ=Asia/Jakarta date +"%Y%m%d-%T")
 ##------------------------------------------------------##
 
 exports() {
-	export KBUILD_BUILD_USER="Hazu"
+	export KBUILD_BUILD_USER="Tea"
 	export ARCH=arm64
 	export SUBARCH=arm64
         
