@@ -137,7 +137,7 @@ DATE=$(TZ=Asia/Jakarta date +"%Y%m%d-%T")
 	msg "|| Cloning Anykernel ||" 
 	git clone --depth 1 --no-single-branch https://github.com/Takanashi-Hikari/AnyKernel3 -b master-x00td
 	cp -af AnyKernel3/anykernel-real.sh AnyKernel3/anykernel.sh
-	sed -i "s/kernel.string=.*/kernel.string=$ZIPNAME by Hazukashio/g" AnyKernel3/anykernel.sh
+	sed -i "s/kernel.string=.*/kernel.string=$ZIPNAME by Tea-Project/g" AnyKernel3/anykernel.sh
 }
 
 ##------------------------------------------------------##
