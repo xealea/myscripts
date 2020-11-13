@@ -36,7 +36,7 @@ err() {
 KERNEL_DIR="$(pwd)"
 
 # The name of the Kernel, to name the ZIP
-ZIPNAME="RAISE-A-WEEK"
+ZIPNAME="Liquid-Aqua"
 
 # The name of the device for which the kernel is built
 MODEL="Asus Max Pro M1"
@@ -90,7 +90,7 @@ LOG_DEBUG=0
 
 ## Set defaults first
 DISTRO=$(cat /etc/issue)
-KBUILD_BUILD_HOST=VISakura-G40
+KBUILD_BUILD_HOST=Aqua-PRIVATE
 CI_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 token=$TELEGRAM_TOKEN
 export KBUILD_BUILD_HOST CI_BRANCH
@@ -107,7 +107,7 @@ then
 	if [ -n "$DRONE" ]
 	then
 		export KBUILD_BUILD_VERSION=$DRONE_BUILD_NUMBER
-		export KBUILD_BUILD_HOST=VISakura-G40
+		export KBUILD_BUILD_HOST=Aqua-PRIVATE
 		export CI_BRANCH=$DRONE_BRANCH
 	else
 		echo "Not presetting Build Version"
@@ -143,7 +143,7 @@ DATE=$(TZ=Asia/Jakarta date +"%Y%m%d-%T")
 ##------------------------------------------------------##
 
 exports() {
-	export KBUILD_BUILD_USER="Hazu"
+	export KBUILD_BUILD_USER="ViewVi"
 	export ARCH=arm64
 	export SUBARCH=arm64
         
