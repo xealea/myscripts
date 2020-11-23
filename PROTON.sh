@@ -132,9 +132,9 @@ DATE=$(TZ=Asia/Jakarta date +"%Y%m%d-%T")
 		git clone --depth=1 https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/ -b ndk-r19 $KERNEL_DIR/gcc64
 		git clone --depth=1 https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9/ -b ndk-r19  $KERNEL_DIR/gcc32
 		git clone --depth=1 https://github.com/kdrag0n/proton-clang -b master $KERNEL_DIR/clang
-        GCC64_DIR=$KERNEL_DIR/gcc64
+                GCC64_DIR=$KERNEL_DIR/gcc64
 		GCC32_DIR=$KERNEL_DIR/gcc32
-        CLANG_DIR=$KERNEL_DIR/clang
+                CLANG_DIR=$KERNEL_DIR/clang
 
 	msg "|| Cloning Anykernel ||" 
 	git clone --depth 1 --no-single-branch https://github.com/Takanashi-Hikari/AnyKernel3 -b master-x00td
@@ -215,11 +215,11 @@ build_kernel() {
 			CROSS_COMPILE=aarch64-linux-gnu- \
 			CROSS_COMPILE_ARM32=arm-linux-gnueabi-  \
 			CC=clang \
-            AR=llvm-ar \
-            NM=llvm-nm \
-            OBJCOPY=llvm-objcopy \
-            OBJDUMP=llvm-objdump \
-            STRIP=llvm-strip
+                        AR=llvm-ar \
+                        NM=llvm-nm \
+                        OBJCOPY=llvm-objcopy \
+                        OBJDUMP=llvm-objdump \
+                        STRIP=llvm-strip
 		)
 	fi
 	
