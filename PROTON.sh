@@ -149,7 +149,7 @@ exports() {
 	export ARCH=arm64
 	export SUBARCH=arm64
         
-	KBUILD_COMPILER_STRING=$("$CLANG_DIR"/bin/aarch64-linux-gnu-gcc --version | head -n 1)
+	KBUILD_COMPILER_STRING=$("$CLANG_DIR"/bin/aarch64-linux-gnu --version | head -n 1)
 	PATH=$CLANG_DIR/bin/:$GCC32_DIR/bin/:/usr/bin:$PATH
 
 	export PATH KBUILD_COMPILER_STRING
