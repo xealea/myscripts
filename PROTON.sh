@@ -128,13 +128,9 @@ DATE=$(TZ=Asia/Jakarta date +"%Y%m%d-%T")
 
  clone() {
 	echo " "
-		msg "|| Cloning GCC 9.3.0 baremetal ||"
-		git clone --depth=1 https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/ -b ndk-r19 $KERNEL_DIR/gcc64
-		git clone --depth=1 https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9/ -b ndk-r19  $KERNEL_DIR/gcc32
-		git clone --depth=1 https://github.com/kdrag0n/proton-clang -b master $KERNEL_DIR/clang
-                GCC64_DIR=$KERNEL_DIR/gcc64
-		GCC32_DIR=$KERNEL_DIR/gcc32
-                CLANG_DIR=$KERNEL_DIR/clang
+		msg "|| Cloning Proton 1.1 ||"
+		git clone --depth=1 https://github.com/kdrag0n/proton-clang -b master $KERNEL_DIR/proton
+                PROTON_DIR=$KERNEL_DIR/proton
 
 	msg "|| Cloning Anykernel ||" 
 	git clone --depth 1 --no-single-branch https://github.com/Takanashi-Hikari/AnyKernel3 -b master-x00td
@@ -148,11 +144,10 @@ exports() {
 	export KBUILD_BUILD_USER="STEVIA"
 	export ARCH=arm64
 	export SUBARCH=arm64
-        
-	KBUILD_COMPILER_STRING=$("$CLANG_DIR"/bin/aarch64-linux-gnu --version | head -n 1)
-	PATH=$CLANG_DIR/bin/:$GCC32_DIR/bin/:/usr/bin:$PATH
 
-	export PATH KBUILD_COMPILER_STRING
+	KBUILD_COMPILER_STRING=$("$PROTON_DIR"/bin/aarch64-linux-gnu --version | head -n 1)
+	PATH=$PROTON_DIR/bin:$PATH
+
 	export BOT_MSG_URL="https://api.telegram.org/bot$token/sendMessage"
 	export BOT_BUILD_URL="https://api.telegram.org/bot$token/sendDocument"
 	PROCS=$(nproc --all)
@@ -226,10 +221,19 @@ build_kernel() {
 	if [ $SILENCE = "1" ]
 	then
 		MAKE+=( -s )
+                        CROSS_COMPILE=aarch64-linux-gnu- \
+			CROSS_COMPILE_ARM32=arm-linux-gnueabi-  \
+			CC=clang \
+                        AR=llvm-ar \
+                        NM=llvm-nm \
+                        OBJCOPY=llvm-objcopy \
+                        OBJDUMP=llvm-objdump \
+                        STRIP=llvm-strip
+              )
 	fi
 
 	msg "|| Started Compilation ||"
-	export CROSS_COMPILE_ARM32=$GCC32_DIR/bin/arm-linux-gnueabi-
+	export CROSS_COMPILE_ARM32=$PROTON_DIR/bin/arm-linux-gnueabi-
 	make -j"$PROCS" O=out CROSS_COMPILE=aarch64-linux-gnu-
 
 		BUILD_END=$(date +"%s")
