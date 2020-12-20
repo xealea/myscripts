@@ -90,7 +90,7 @@ LOG_DEBUG=0
 
 ## Set defaults first
 DISTRO=$(cat /etc/issue)
-KBUILD_BUILD_HOST=STEVIA
+KBUILD_BUILD_HOST=DeathSenpai
 CI_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 token=$TELEGRAM_TOKEN
 export KBUILD_BUILD_HOST CI_BRANCH
@@ -101,13 +101,13 @@ then
 	if [ -n "$CIRCLECI" ]
 	then
 		export KBUILD_BUILD_VERSION=$CIRCLE_BUILD_NUM
-		export KBUILD_BUILD_HOST="TeaXLatte"
+		export KBUILD_BUILD_HOST="Calliope"
 		export CI_BRANCH=$CIRCLE_BRANCH
 	fi
 	if [ -n "$DRONE" ]
 	then
 		export KBUILD_BUILD_VERSION=$DRONE_BUILD_NUMBER
-		export KBUILD_BUILD_HOST=TeaXLatte
+		export KBUILD_BUILD_HOST=Calliope
 		export CI_BRANCH=$DRONE_BRANCH
 	else
 		echo "Not presetting Build Version"
@@ -141,10 +141,11 @@ DATE=$(TZ=Asia/Jakarta date +"%Y%m%d-%T")
 ##------------------------------------------------------##
 
 exports() {
-	export KBUILD_BUILD_USER="STEVIA"
+	export KBUILD_BUILD_USER="DeathSenpai"
 	export ARCH=arm64
 	export SUBARCH=arm64
 
+	KBUILD_COMPILER_STRING=$("$PROTON_DIR"/bin/aarch64-linux-gnu-gcc --version | head -n 1)
         export PATH="$PROTON_DIR/proton/bin:$PATH"
 
 	export BOT_MSG_URL="https://api.telegram.org/bot$token/sendMessage"
