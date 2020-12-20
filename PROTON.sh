@@ -221,15 +221,6 @@ build_kernel() {
 	if [ $SILENCE = "1" ]
 	then
 		MAKE+=( -s )
-                        CROSS_COMPILE=aarch64-linux-gnu- \
-			CROSS_COMPILE_ARM32=arm-linux-gnueabi-  \
-			CC=clang \
-                        AR=llvm-ar \
-                        NM=llvm-nm \
-                        OBJCOPY=llvm-objcopy \
-                        OBJDUMP=llvm-objdump \
-                        STRIP=llvm-strip
-              )
 	fi
 
 	msg "|| Started Compilation ||"
