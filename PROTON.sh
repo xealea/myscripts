@@ -145,8 +145,7 @@ exports() {
 	export ARCH=arm64
 	export SUBARCH=arm64
 
-	KBUILD_COMPILER_STRING=$("$PROTON_DIR"/bin/aarch64-linux-gnu --version | head -n 1)
-	PATH=$PROTON_DIR/bin:$PATH
+        export PATH="$PROTON_DIR/proton/bin:$PATH"
 
 	export BOT_MSG_URL="https://api.telegram.org/bot$token/sendMessage"
 	export BOT_BUILD_URL="https://api.telegram.org/bot$token/sendDocument"
