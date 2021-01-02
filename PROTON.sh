@@ -208,12 +208,19 @@ build_kernel() {
 	then
 		MAKE+=(
 			CROSS_COMPILE=aarch64-linux-gnu- \
-			CROSS_COMPILE_ARM32=arm-linux-gnueabi-  \
+			CROSS_COMPILE_ARM32=arm-linux-gnueabi- \
+                        CLANG_TRIPLE=aarch64-linux-gnu- \
 			CC=clang \
+                        LD=ld.lld \
                         AR=llvm-ar \
                         NM=llvm-nm \
+                        HOSTCC=clang \
+                        HOSTCXX=clang++ \
+                        HOSTAR=llvm-ar \
+                        HOSTLD=ld.lld \
                         OBJCOPY=llvm-objcopy \
                         OBJDUMP=llvm-objdump \
+                        OBJSIZE=llvm-size \
                         STRIP=llvm-strip
 		)
 	fi
