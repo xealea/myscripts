@@ -146,7 +146,7 @@ exports() {
 	export SUBARCH=arm64
 
 	KBUILD_COMPILER_STRING=$("$CLANG_DIR"/bin/clang --version | head -n 1)
-  export PATH="$CLANG_DIR/clang/bin:$PATH"
+  	export PATH="$CLANG_DIR/clang/bin:$PATH"
 
 	export BOT_MSG_URL="https://api.telegram.org/bot$token/sendMessage"
 	export BOT_BUILD_URL="https://api.telegram.org/bot$token/sendDocument"
@@ -207,22 +207,22 @@ build_kernel() {
 	if [ $COMPILER = "clang" ]
 	then
 		MAKE+=(
-			   CROSS_COMPILE=aarch64-linux-gnu- \
-			   CROSS_COMPILE_ARM32=arm-linux-gnueabi- \
-         CLANG_TRIPLE=aarch64-linux-gnu- \
-			   CC=clang \
-         LD=ld.lld \
-         AR=llvm-ar \
-         NM=llvm-nm \
-         HOSTCC=clang \
-         HOSTCXX=clang++ \
-         HOSTAR=llvm-ar \
-         HOSTLD=ld.lld \
-         OBJCOPY=llvm-objcopy \
-         OBJDUMP=llvm-objdump \
-         OBJSIZE=llvm-size \
-         STRIP=llvm-strip
-		     )
+			CROSS_COMPILE=aarch64-linux-gnu- \
+			CROSS_COMPILE_ARM32=arm-linux-gnueabi- \
+         		CLANG_TRIPLE=aarch64-linux-gnu- \
+			CC=clang \
+         		LD=ld.lld \
+         		AR=llvm-ar \
+         		NM=llvm-nm \
+         		HOSTCC=clang \
+         		HOSTCXX=clang++ \
+         		HOSTAR=llvm-ar \
+         		HOSTLD=ld.lld \
+         		OBJCOPY=llvm-objcopy \
+         		OBJDUMP=llvm-objdump \
+         		OBJSIZE=llvm-size \
+         		STRIP=llvm-strip
+	     	)
 	fi
 	
 	if [ $SILENCE = "1" ]
