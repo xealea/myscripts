@@ -129,8 +129,8 @@ DATE=$(TZ=Asia/Jakarta date +"%Y%m%d-%T")
  clone() {
 	echo " "
 		msg "|| Cloning GCC 9.3.0 baremetal ||"
-		git clone --depth=1 https://github.com/Calliope-K/Tea-Toolchain -b ARM64 $KERNEL_DIR/gcc64
-		git clone --depth=1 https://github.com/Calliope-K/Tea-Toolchain -b ARM32 $KERNEL_DIR/gcc32
+		git clone --depth=1 https://github.com/KudProject/aarch64-linux-android-4.9 -b master $KERNEL_DIR/gcc64
+		git clone --depth=1 https://github.com/KudProject/arm-linux-androideabi-4.9 -b master $KERNEL_DIR/gcc32
 		GCC64_DIR=$KERNEL_DIR/gcc64
 		GCC32_DIR=$KERNEL_DIR/gcc32
 
@@ -147,7 +147,7 @@ exports() {
 	export ARCH=arm64
 	export SUBARCH=arm64
         
-        KBUILD_COMPILER_STRING=$("$GCC64_DIR"/bin/aarch64-linux-android-strings --version | head -n 1)
+        KBUILD_COMPILER_STRING=$("$GCC64_DIR"/bin/aarch64-linux-android-gcc --version | head -n 1)
 	PATH=$GCC64_DIR/bin/:$GCC32_DIR/bin/:/usr/bin:$PATH
 
 	export PATH KBUILD_COMPILER_STRING
