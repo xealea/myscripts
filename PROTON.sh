@@ -128,12 +128,16 @@ DATE=$(TZ=Asia/Jakarta date +"%Y%m%d-%T")
 
  clone() {
 	echo " "
-		msg "|| Cloning Proton 1.1 ||"
-		git clone --depth=1 https://github.com/kdrag0n/proton-clang -b master $KERNEL_DIR/proton
+		msg "|| Cloning GCC 9.3.0 baremetal ||"
+		git clone --depth=1 https://github.com/KudProject/aarch64-linux-android-4.9 -b master $KERNEL_DIR/gcc64
+		git clone --depth=1 https://github.com/KudProject/arm-linux-androideabi-4.9 -b master $KERNEL_DIR/gcc32
+                git clone --depth=1 https://github.com/kdrag0n/proton-clang -b master $KERNEL_DIR/proton
+		GCC64_DIR=$KERNEL_DIR/gcc64
+		GCC32_DIR=$KERNEL_DIR/gcc32
                 PROTON_DIR=$KERNEL_DIR/proton
 
 	msg "|| Cloning Anykernel ||" 
-	git clone --depth 1 --no-single-branch https://github.com/Takanashi-Hikari/AnyKernel3 -b master-x00td
+	git clone --depth 1 --no-single-branch https://github.com/Calliope-K/AnyKernel3 -b master-x00td
 	cp -af AnyKernel3/anykernel-real.sh AnyKernel3/anykernel.sh
 	sed -i "s/kernel.string=.*/kernel.string=$ZIPNAME by Tea-Project/g" AnyKernel3/anykernel.sh
 }
@@ -144,10 +148,11 @@ exports() {
 	export KBUILD_BUILD_USER="DeathSenpai"
 	export ARCH=arm64
 	export SUBARCH=arm64
+        
+        KBUILD_COMPILER_STRING=$("$PROTON_DIR"/bin/clang --version | head -n 1)
+	PATH=$PROTON_DIR/bin/:$PROTON_DIR/bin/:/usr/bin:$PATH
 
-	KBUILD_COMPILER_STRING=$("$PROTON_DIR"/bin/clang --version | head -n 1)
-        export PATH="$PROTON_DIR/proton/bin:$PATH"
-
+	export PATH KBUILD_COMPILER_STRING
 	export BOT_MSG_URL="https://api.telegram.org/bot$token/sendMessage"
 	export BOT_BUILD_URL="https://api.telegram.org/bot$token/sendDocument"
 	PROCS=$(nproc --all)
@@ -208,20 +213,11 @@ build_kernel() {
 	then
 		MAKE+=(
 			CROSS_COMPILE=aarch64-linux-gnu- \
-			CROSS_COMPILE_ARM32=arm-linux-gnueabi- \
-                        CLANG_TRIPLE=aarch64-linux-gnu- \
+			CROSS_COMPILE_ARM32=arm-linux-gnueabi-  \
 			CC=clang \
-                        LD=ld.lld \
-                        AR=llvm-ar \
-                        NM=llvm-nm \
-                        HOSTCC=clang \
-                        HOSTCXX=clang++ \
-                        HOSTAR=llvm-ar \
-                        HOSTLD=ld.lld \
-                        OBJCOPY=llvm-objcopy \
-                        OBJDUMP=llvm-objdump \
-                        OBJSIZE=llvm-size \
-                        STRIP=llvm-strip
+			AR=llvm-ar \
+			OBJDUMP=llvm-objdump \
+			STRIP=llvm-strip
 		)
 	fi
 	
@@ -232,7 +228,7 @@ build_kernel() {
 
 	msg "|| Started Compilation ||"
 	export CROSS_COMPILE_ARM32=$PROTON_DIR/bin/arm-linux-gnueabi-
-	make -j"$PROCS" O=out CROSS_COMPILE=aarch64-linux-gnu-
+	make -j"$PROCS" O=out CROSS_COMPILE=aarch64-linux-android-
 
 		BUILD_END=$(date +"%s")
 		DIFF=$((BUILD_END - BUILD_START))
