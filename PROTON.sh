@@ -228,7 +228,7 @@ build_kernel() {
 
 	msg "|| Started Compilation ||"
 	export CROSS_COMPILE_ARM32=$PROTON_DIR/bin/arm-linux-gnueabi-
-	make -j"$PROCS" O=out CROSS_COMPILE=aarch64-linux-android-
+	make -j"$PROCS" O=out CROSS_COMPILE=aarch64-linux-gnu-
 
 		BUILD_END=$(date +"%s")
 		DIFF=$((BUILD_END - BUILD_START))
