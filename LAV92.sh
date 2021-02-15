@@ -90,7 +90,7 @@ LOG_DEBUG=0
 
 ## Set defaults first
 DISTRO=$(cat /etc/issue)
-KBUILD_BUILD_HOST=Archlinuz
+KBUILD_BUILD_HOST=Archlinux
 CI_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 token=$TELEGRAM_TOKEN
 export KBUILD_BUILD_HOST CI_BRANCH
