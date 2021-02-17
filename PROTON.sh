@@ -213,9 +213,12 @@ build_kernel() {
 	then
 		MAKE+=(
 			CROSS_COMPILE=aarch64-linux-gnu- \
-			CROSS_COMPILE_COMPAT=arm-linux-gnueabi-  \
+			CROSS_COMPILE_ARM32=arm-linux-gnueabi- \
 			CC=clang \
+			HOSTCC=clang \
 			AR=llvm-ar \
+			NM=llvm-nm \
+			OBJCOPY=llvm-objcopy \
 			OBJDUMP=llvm-objdump \
 			STRIP=llvm-strip
 		)
@@ -228,7 +231,7 @@ build_kernel() {
 
 	msg "|| Started Compilation ||"
 	export CROSS_COMPILE_COMPAT=$PROTON_DIR/bin/arm-linux-gnueabi-
-	make -j"$PROCS" O=out CROSS_COMPILE=aarch64-linux-gnu-
+	make -j"$PROCS" O=out CROSS_COMPILE=$PROTON_DIR/bin/aarch64-linux-gnu-
 
 		BUILD_END=$(date +"%s")
 		DIFF=$((BUILD_END - BUILD_START))
