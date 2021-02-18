@@ -90,7 +90,7 @@ LOG_DEBUG=0
 
 ## Set defaults first
 DISTRO=$(cat /etc/issue)
-KBUILD_BUILD_HOST=DeathSenpai
+KBUILD_BUILD_HOST=Arch
 CI_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 token=$TELEGRAM_TOKEN
 export KBUILD_BUILD_HOST CI_BRANCH
@@ -101,13 +101,13 @@ then
 	if [ -n "$CIRCLECI" ]
 	then
 		export KBUILD_BUILD_VERSION=$CIRCLE_BUILD_NUM
-		export KBUILD_BUILD_HOST="Calliope"
+		export KBUILD_BUILD_HOST="Vcyzteen"
 		export CI_BRANCH=$CIRCLE_BRANCH
 	fi
 	if [ -n "$DRONE" ]
 	then
 		export KBUILD_BUILD_VERSION=$DRONE_BUILD_NUMBER
-		export KBUILD_BUILD_HOST=Calliope
+		export KBUILD_BUILD_HOST=Vcyzteen
 		export CI_BRANCH=$DRONE_BRANCH
 	else
 		echo "Not presetting Build Version"
@@ -145,7 +145,7 @@ DATE=$(TZ=Asia/Jakarta date +"%Y%m%d-%T")
 ##------------------------------------------------------##
 
 exports() {
-	export KBUILD_BUILD_USER="DeathSenpai"
+	export KBUILD_BUILD_USER="Arch"
 	export ARCH=arm64
 	export SUBARCH=arm64
         
@@ -215,6 +215,7 @@ build_kernel() {
 			CROSS_COMPILE=aarch64-linux-gnu- \
 			CROSS_COMPILE_ARM32=arm-linux-gnueabi- \
 			CC=clang \
+                        LD=ld.lld \
 			HOSTCC=clang \
 			AR=llvm-ar \
 			NM=llvm-nm \
@@ -236,6 +237,7 @@ build_kernel() {
                         CROSS_COMPILE=aarch64-linux-gnu- \
 			CROSS_COMPILE_ARM32=arm-linux-gnueabi- \
 			CC=clang \
+                        LD=ld.lld \
 			HOSTCC=clang \
 			AR=llvm-ar \
 			NM=llvm-nm \
