@@ -135,9 +135,7 @@ DATE=$(TZ=Asia/Jakarta date +"%Y%m%d-%T")
 		GCC32_DIR=$KERNEL_DIR/gcc32
 
 	msg "|| Cloning Anykernel ||" 
-	git clone --depth 1 --no-single-branch https://github.com/Takanashi-Hikari/AnyKernel3 -b master-x00td
-	cp -af AnyKernel3/anykernel-real.sh AnyKernel3/anykernel.sh
-	sed -i "s/kernel.string=.*/kernel.string=$ZIPNAME by Tea-Project/g" AnyKernel3/anykernel.sh
+	git clone --depth 1 --no-single-branch https://github.com/vcyzteen/AnyKernel3 -b lavender
 }
 
 ##------------------------------------------------------##
