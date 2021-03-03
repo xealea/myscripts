@@ -39,10 +39,10 @@ KERNEL_DIR="$(pwd)"
 ZIPNAME="Tea-Kernel"
 
 # The name of the device for which the kernel is built
-MODEL="Asus Max Pro M1"
+MODEL="Xiaomi Redmi 7"
 
 # The codename of the device
-DEVICE="X00TD"
+DEVICE="lavendder"
 
 # The defconfig which should be used. Get it from config.gz from
 # your device or check source
