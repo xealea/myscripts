@@ -212,16 +212,16 @@ build_kernel() {
 	if [ $COMPILER = "clang" ]
 	then
 		MAKE+=(
-			CROSS_COMPILE=aarch64-linux-gnu- \
-			CROSS_COMPILE_ARM32=arm-linux-gnueabi- \
+			ARCH=arm64 \
 			CC=clang \
-                        LD=ld.lld \
-			HOSTCC=clang \
 			AR=llvm-ar \
 			NM=llvm-nm \
 			OBJCOPY=llvm-objcopy \
 			OBJDUMP=llvm-objdump \
-			STRIP=llvm-strip
+			STRIP=llvm-strip \
+                        LD=ld.lld \
+			CROSS_COMPILE=aarch64-linux-gnu- \
+			CROSS_COMPILE_ARM32=arm-linux-gnueabi-
 		)
 	fi
 	
