@@ -39,14 +39,14 @@ KERNEL_DIR="$(pwd)"
 ZIPNAME="Tea-Kernel"
 
 # The name of the device for which the kernel is built
-MODEL="Xiaomi Redmi 7"
+MODEL="Xiaomi Redmi Note 7"
 
 # The codename of the device
 DEVICE="lavender"
 
 # The defconfig which should be used. Get it from config.gz from
 # your device or check source
-DEFCONFIG=tea-oldcam_defconfig
+DEFCONFIG=tea-old_defconfig
 
 # Specify compiler. 
 # 'clang' or 'gcc'
