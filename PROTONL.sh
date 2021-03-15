@@ -39,10 +39,10 @@ KERNEL_DIR="$(pwd)"
 ZIPNAME="Tea-Kernel"
 
 # The name of the device for which the kernel is built
-MODEL="Asus Max Pro M1"
+MODEL="xiaomi redmi note 7"
 
 # The codename of the device
-DEVICE="X00TD"
+DEVICE="lavender"
 
 # The defconfig which should be used. Get it from config.gz from
 # your device or check source
@@ -129,8 +129,8 @@ DATE=$(TZ=Asia/Jakarta date +"%Y%m%d-%T")
  clone() {
 	echo " "
 		msg "|| Cloning GCC 9.3.0 baremetal ||"
-		git clone --depth=1 https://github.com/KudProject/aarch64-linux-android-4.9 -b master $KERNEL_DIR/gcc64
-		git clone --depth=1 https://github.com/KudProject/arm-linux-androideabi-4.9 -b master $KERNEL_DIR/gcc32
+		git clone --depth=1 https://github.com/mvaisakh/gcc-arm64 -b gcc-master gcc $KERNEL_DIR/gcc64
+		git clone --depth=1 https://github.com/mvaisakh/gcc-arm -b gcc-master gcc $KERNEL_DIR/gcc32
                 git clone --depth=1 https://github.com/kdrag0n/proton-clang -b master $KERNEL_DIR/proton
 		GCC64_DIR=$KERNEL_DIR/gcc64
 		GCC32_DIR=$KERNEL_DIR/gcc32
@@ -213,15 +213,15 @@ build_kernel() {
 	then
 		MAKE+=(
 			ARCH=arm64 \
-				CC=clang \
-				AR=llvm-ar \
-				NM=llvm-nm \
-				OBJCOPY=llvm-objcopy \
-				OBJDUMP=llvm-objdump \
-				STRIP=llvm-strip \
-        LD=ld.lld \
-				CROSS_COMPILE=aarch64-linux-gnu- \
-				CROSS_COMPILE_ARM32=arm-linux-gnueabi-
+			CC=clang \
+			AR=llvm-ar \
+			NM=llvm-nm \
+			OBJCOPY=llvm-objcopy \
+			OBJDUMP=llvm-objdump \
+			STRIP=llvm-strip \
+        		LD=ld.lld \
+			CROSS_COMPILE=aarch64-linux-gnu- \
+			CROSS_COMPILE_ARM32=arm-linux-gnueabi-
 		)
 	fi
 	
@@ -235,15 +235,15 @@ build_kernel() {
 	export CROSS_COMPILE=$PROTON_DIR/bin/aarch64-linux-gnu-
 	make -j"$PROCS" O=out \
                         ARCH=arm64 \
-				CC=clang \
-				AR=llvm-ar \
-				NM=llvm-nm \
-				OBJCOPY=llvm-objcopy \
-				OBJDUMP=llvm-objdump \
-				STRIP=llvm-strip \
-                                LD=ld.lld \
-				CROSS_COMPILE=aarch64-linux-gnu- \
-				CROSS_COMPILE_ARM32=arm-linux-gnueabi-
+			CC=clang \
+			AR=llvm-ar \
+			NM=llvm-nm \
+			OBJCOPY=llvm-objcopy \
+			OBJDUMP=llvm-objdump \
+			STRIP=llvm-strip \
+                        LD=ld.lld \
+			CROSS_COMPILE=aarch64-linux-gnu- \
+			CROSS_COMPILE_ARM32=arm-linux-gnueabi-
 			
 		BUILD_END=$(date +"%s")
 		DIFF=$((BUILD_END - BUILD_START))
