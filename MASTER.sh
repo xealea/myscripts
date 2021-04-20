@@ -36,13 +36,13 @@ err() {
 KERNEL_DIR="$(pwd)"
 
 # The name of the Kernel, to name the ZIP
-ZIPNAME="/u/kernel"
+ZIPNAME="u/kernel"
 
 # The name of the device for which the kernel is built
 MODEL="Asus Max Pro M1"
 
 # The codename of the device
-DEVICE="X00TD"
+DEVICE="X00T"
 
 # The defconfig which should be used. Get it from config.gz from
 # your device or check source
