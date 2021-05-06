@@ -50,7 +50,7 @@ DEFCONFIG=Tea_defconfig
 
 # Specify compiler. 
 # 'clang' or 'gcc'
-COMPILER=clang
+COMPILER=gcc
 
 # Clean source prior building. 1 is NO(default) | 0 is YES
 INCREMENTAL=1
@@ -137,7 +137,7 @@ DATE=$(TZ=Asia/Jakarta date +"%Y%m%d-%T")
 		GCC32_DIR=$KERNEL_DIR/gcc32
 
 	msg "|| Cloning Anykernel ||" 
-	git clone --depth 1 --no-single-branch https://github.com/vcyzteen/AnyKernel3 -b maste
+	git clone --depth 1 --no-single-branch https://github.com/vcyzteen/AnyKernel3 -b master
 	sed -i "s/kernel.string=.*/kernel.string=$ZIPNAME by Baka/g" AnyKernel3/anykernel.sh
 }
 
