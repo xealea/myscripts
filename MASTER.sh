@@ -137,7 +137,7 @@ DATE=$(TZ=Asia/Jakarta date +"%Y%m%d-%T")
 		GCC32_DIR=$KERNEL_DIR/gcc32
 
 	msg "|| Cloning Anykernel ||" 
-	git clone --depth 1 --no-single-branch https://github.com/Takanashi-Hikari/AnyKernel3 -b master-x00td
+	git clone --depth 1 --no-single-branch https://github.com/vcyzteen/AnyKernel3 -b maste
 	sed -i "s/kernel.string=.*/kernel.string=$ZIPNAME by Baka/g" AnyKernel3/anykernel.sh
 }
 
