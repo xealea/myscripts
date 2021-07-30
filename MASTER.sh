@@ -128,13 +128,10 @@ DATE=$(TZ=Asia/Jakarta date +"%Y%m%d-%T")
 
  clone() {
 	echo " "
-		msg "|| Cloning GCC 9.3.0 baremetal ||"
-		git clone --depth=1 https://github.com/KudProject/aarch64-linux-android-4.9 -b master $KERNEL_DIR/gcc64
-		git clone --depth=1 https://github.com/KudProject/arm-linux-androideabi-4.9 -b master $KERNEL_DIR/gcc32
-                git clone --depth=1 https://github.com/NusantaraDevs/clang -b dev/10.0 $KERNEL_DIR/clang
-                CLANG_DIR=$KERNEL_DIR/clang
-		GCC64_DIR=$KERNEL_DIR/gcc64
-		GCC32_DIR=$KERNEL_DIR/gcc32
+		msg "|| Path Toolchain ||"
+                CLANG_DIR=/root/proton
+		GCC64_DIR=/root/gcc-4.9_64
+		GCC32_DIR=/root/gcc-4.9_32
 
 	msg "|| Cloning Anykernel ||" 
 	git clone --depth 1 --no-single-branch https://github.com/vcyzteen/AnyKernel3 -b master
