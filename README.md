@@ -24,6 +24,10 @@
         ZIPNAME    - This is literally the name of our kernel which you would prefer. This
                      applies to the name of the zip too.
 
+	AUTHOR     - It is you. Set your Name here ;)
+	
+	ARCH	- Architcture of your device. Most recent devices are arm64.
+
         MODEL      - Name of your device, which is known to the market.
 
         DEVICE     - The codename of your device. 
@@ -32,6 +36,11 @@
                      you will need to build kernel. In case your source has the defconfig 
                      inside /arch/arm64/configs/vendor , then you need to set it as
                      '/vendor/<name of your defconfig>'
+
+	COMPILER  - Specifies the compiler. Make sure your kernel has all patches (if required
+			for your kernel).
+
+	LINKER	 - Specifies linker to link programs. Defaults to LLD.
 
         INCREMENTAL- Whether you are going to clean your local source each time prior building
                      or not.
@@ -65,23 +74,23 @@
                      0 - No, thanks
 
         SIGN 	   - It sign the ZIP with AOSP Sign Keys for Package Signature verfication in 
-        			 custom recoveries. 
+	             custom recoveries. 
 
-        			 1 - Yes, sign the ZIP
-        			 0 - No, thanks.
+		     1 - Yes, sign the ZIP
+	             0 - No, thanks.
 
         SILENCE	   - It literally silences the compilation output. Only warnings / errors
-        			 are shown on ouput stream (terminal). It is useful to catch warnings
-        			 easily.
+                     are shown on ouput stream (terminal). It is useful to catch warnings
+	             easily.
 
-        			 1 - Yes, silence the compilation
-        			 0 - No, do not do that (default)
+                     1 - Yes, silence the compilation
+	             0 - No, do not do that (default)
 
         LOG_DEBUG  - Debugging purpose. Sends the compilation log on each run. Mostly needed
-        			 for monitoring(fixing warnings and errors) when cross-compiled.
+	             for monitoring(fixing warnings and errors) when cross-compiled.
 
-        			 1 - Yes. [self-explanatory]
-        			 0 - No. [self-explanatory]
+	             1 - Yes. [self-explanatory]
+	             0 - No. [self-explanatory]
 
           
   2. You should take care of the AnyKernel repository the script is cloning. You should have
