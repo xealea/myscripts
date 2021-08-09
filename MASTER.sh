@@ -48,28 +48,28 @@ KERNEL_DIR="$(pwd)"
 BASEDIR="$(basename "$KERNEL_DIR")"
 
 # The name of the Kernel, to name the ZIP
-ZIPNAME="azure"
+ZIPNAME="baka"
 
 # Build Author
 # Take care, it should be a universal and most probably, case-sensitive
-AUTHOR="Panchajanya1999"
+AUTHOR="vcyzteen"
 
 # Architecture
 ARCH=arm64
 
 # The name of the device for which the kernel is built
-MODEL="Redmi Note 7 Pro"
+MODEL="Pocophone x3 pro"
 
 # The codename of the device
-DEVICE="violet"
+DEVICE="vayu"
 
 # The defconfig which should be used. Get it from config.gz from
 # your device or check source
-DEFCONFIG=vendor/violet-perf_defconfig
+DEFCONFIG=vayu-perf_defconfig
 
 # Specify compiler. 
 # 'clang' or 'gcc'
-COMPILER=clang
+COMPILER=gcc
 
 # Specify linker.
 # 'ld.lld'(default)
@@ -94,7 +94,7 @@ FILES=Image.gz-dtb
 
 # Build dtbo.img (select this only if your source has support to building dtbo.img)
 # 1 is YES | 0 is NO(default)
-BUILD_DTBO=1
+BUILD_DTBO=0
 	if [ $BUILD_DTBO = 1 ]
 	then 
 		# Set this to your dtbo path. 
@@ -164,7 +164,6 @@ fi
 #Check Kernel Version
 KERVER=$(make kernelversion)
 
-
 # Set a commit head
 COMMIT_HEAD=$(git log --oneline -1)
 
@@ -178,8 +177,8 @@ DATE=$(TZ=Asia/Jakarta date +"%Y%m%d-%T")
 	if [ $COMPILER = "gcc" ]
 	then
 		msg "|| Cloning GCC 9.3.0 baremetal ||"
-		git clone --depth=1 https://github.com/mvaisakh/gcc-arm64.git gcc64
-		git clone --depth=1 https://github.com/arter97/arm32-gcc.git gcc32
+		git clone --depth=1 https://github.com/Baka-Project/BakaGCC.git -b gcc-arm gcc32
+		git clone --depth=1 https://github.com/Baka-Project/BakaGCC.git -b gcc-arm64 gcc64
 		GCC64_DIR=$KERNEL_DIR/gcc64
 		GCC32_DIR=$KERNEL_DIR/gcc32
 	fi
