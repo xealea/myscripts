@@ -48,32 +48,35 @@ KERNEL_DIR="$(pwd)"
 BASEDIR="$(basename "$KERNEL_DIR")"
 
 # The name of the Kernel, to name the ZIP
-ZIPNAME="baka"
+ZIPNAME="azure"
 
 # Build Author
 # Take care, it should be a universal and most probably, case-sensitive
-AUTHOR="vcyzteen"
+AUTHOR="Panchajanya1999"
 
 # Architecture
 ARCH=arm64
 
 # The name of the device for which the kernel is built
-MODEL="Pocophone x3 pro"
+MODEL="Redmi Note 7 Pro"
 
 # The codename of the device
-DEVICE="vayu"
+DEVICE="violet"
 
 # The defconfig which should be used. Get it from config.gz from
 # your device or check source
-DEFCONFIG=vayu-perf_defconfig
+DEFCONFIG=vendor/violet-perf_defconfig
 
 # Specify compiler. 
 # 'clang' or 'gcc'
 COMPILER=gcc
 
+# Build modules. 0 = NO | 1 = YES
+MODULES=0
+
 # Specify linker.
 # 'ld.lld'(default)
-LINKER=ld.lld
+LINKER=ld.bfd
 
 # Clean source prior building. 1 is NO(default) | 0 is YES
 INCREMENTAL=1
@@ -94,7 +97,7 @@ FILES=Image.gz-dtb
 
 # Build dtbo.img (select this only if your source has support to building dtbo.img)
 # 1 is YES | 0 is NO(default)
-BUILD_DTBO=0
+BUILD_DTBO=1
 	if [ $BUILD_DTBO = 1 ]
 	then 
 		# Set this to your dtbo path. 
@@ -134,7 +137,9 @@ LOG_DEBUG=0
 # set KBUILD_BUILD_VERSION and KBUILD_BUILD_HOST and CI_BRANCH
 
 ## Set defaults first
-DISTRO=$(cat /etc/issue)
+
+# shellcheck source=/etc/os-release
+DISTRO=$(source /etc/os-release && echo "${NAME}")
 KBUILD_BUILD_HOST=$(uname -a | awk '{print $2}')
 CI_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 TERM=xterm
@@ -164,6 +169,7 @@ fi
 #Check Kernel Version
 KERVER=$(make kernelversion)
 
+
 # Set a commit head
 COMMIT_HEAD=$(git log --oneline -1)
 
@@ -177,24 +183,28 @@ DATE=$(TZ=Asia/Jakarta date +"%Y%m%d-%T")
 	if [ $COMPILER = "gcc" ]
 	then
 		msg "|| Cloning GCC 9.3.0 baremetal ||"
-		git clone --depth=1 https://github.com/Baka-Project/BakaGCC.git -b gcc-arm gcc32
-		git clone --depth=1 https://github.com/Baka-Project/BakaGCC.git -b gcc-arm64 gcc64
+		git clone --depth=1 https://github.com/mvaisakh/gcc-arm64.git gcc64
+		git clone --depth=1 https://github.com/arter97/arm32-gcc.git gcc32
 		GCC64_DIR=$KERNEL_DIR/gcc64
 		GCC32_DIR=$KERNEL_DIR/gcc32
 	fi
 	
 	if [ $COMPILER = "clang" ]
 	then
-		msg "|| Cloning Clang-14 ||"
-		git clone --depth=1 https://gitlab.com/Panchajanya1999/azure-clang.git clang-llvm
+		msg "|| Cloning Clang-13 ||"
+		git clone --depth=1 https://github.com/kdrag0n/proton-clang.git clang-llvm
 		# Toolchain Directory defaults to clang-llvm
 		TC_DIR=$KERNEL_DIR/clang-llvm
 	fi
 
 	msg "|| Cloning Anykernel ||"
 	git clone --depth 1 --no-single-branch https://github.com/"$AUTHOR"/AnyKernel3.git
-	msg "|| Cloning libufdt ||"
-	git clone https://android.googlesource.com/platform/system/libufdt "$KERNEL_DIR"/scripts/ufdt/libufdt
+
+	if [ $BUILD_DTBO = 1 ]
+	then
+		msg "|| Cloning libufdt ||"
+		git clone https://android.googlesource.com/platform/system/libufdt "$KERNEL_DIR"/scripts/ufdt/libufdt
+	fi
 }
 
 ##------------------------------------------------------##
@@ -242,8 +252,8 @@ tg_post_build() {
 	curl --progress-bar -F document=@"$1" "$BOT_BUILD_URL" \
 	-F chat_id="$CHATID"  \
 	-F "disable_web_page_preview=true" \
-	-F "parse_mode=html" \
-	-F caption="$2 | <b>MD5 Checksum : </b><code>$MD5CHECK</code>"
+	-F "parse_mode=Markdown" \
+	-F caption="$2 | *MD5 Checksum : *\`$MD5CHECK\`"
 }
 
 ##----------------------------------------------------------##
@@ -280,7 +290,8 @@ build_kernel() {
 			CC=clang \
 			AR=llvm-ar \
 			OBJDUMP=llvm-objdump \
-			STRIP=llvm-strip
+			STRIP=llvm-strip \
+			LD="$LINKER"
 		)
 	elif [ $COMPILER = "gcc" ]
 	then
@@ -289,7 +300,8 @@ build_kernel() {
 			CROSS_COMPILE=aarch64-elf- \
 			AR=aarch64-elf-ar \
 			OBJDUMP=aarch64-elf-objdump \
-			STRIP=aarch64-elf-strip
+			STRIP=aarch64-elf-strip \
+			LD=aarch64-elf-$LINKER
 		)
 	fi
 	
@@ -302,9 +314,19 @@ build_kernel() {
 	make -kj"$PROCS" O=out \
 		NM=llvm-nm \
 		OBJCOPY=llvm-objcopy \
-		LD=$LINKER \
 		V=$VERBOSE \
 		"${MAKE[@]}" 2>&1 | tee error.log
+	if [ $MODULES = "1" ]
+	then
+	    msg "|| Started Compiling Modules ||"
+	    make -j"$PROCS" O=out \
+		 "${MAKE[@]}" modules_prepare
+	    make -j"$PROCS" O=out \
+		 "${MAKE[@]}" modules INSTALL_MOD_PATH="$KERNEL_DIR"/out/modules
+	    make -j"$PROCS" O=out \
+		 "${MAKE[@]}" modules_install INSTALL_MOD_PATH="$KERNEL_DIR"/out/modules
+	    find "$KERNEL_DIR"/out/modules -type f -iname '*.ko' -exec cp {} AnyKernel3/modules/system/lib/modules/ \;
+	fi
 
 		BUILD_END=$(date +"%s")
 		DIFF=$((BUILD_END - BUILD_START))
@@ -323,7 +345,7 @@ build_kernel() {
 			else
 			if [ "$PTTG" = 1 ]
  			then
-				tg_post_build "error.log" "<b>Build failed to compile after $((DIFF / 60)) minute(s) and $((DIFF % 60)) seconds</b>"
+				tg_post_build "error.log" "*Build failed to compile after $((DIFF / 60)) minute(s) and $((DIFF % 60)) seconds*"
 			fi
 		fi
 	
