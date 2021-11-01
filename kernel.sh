@@ -393,4 +393,13 @@ then
 	tg_post_build "error.log" "$CHATID" "Debug Mode Logs"
 fi
 
+mkdir repo
+mv "$ZIP_FINAL.zip" repo
+cd repo
+git init
+git add .
+git commit -m "push" --signoff
+git branch -M 4.4
+git push https://$GITHUB_TOKEN@github.com/vcyzteen/result-linux-kernel.git 4.4
+
 ##----------------*****-----------------------------##
