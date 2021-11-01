@@ -393,14 +393,12 @@ then
 	tg_post_build "error.log" "$CHATID" "Debug Mode Logs"
 fi
 
-mkdir "$KERNEL_DIR"/repo
-find "$KERNEL_DIR" -iname *.zip -exec mv {} "$KERNEL_DIR"/repo \;
-# mv "$KERNEL_DIR"/Anykernel3/"$ZIP_FINAL.zip" "$KERNEL_DIR"/repo
-cd "$KERNEL_DIR"/repo
-git init
+cd "$KERNEL_DIR"
+git clone https://github.com/vcyzteen/result-linux-kernel.git
+find "$KERNEL_DIR" -iname *.zip -exec mv {} "$KERNEL_DIR"/result-linux-kernel \;
+cd "$KERNEL_DIR"/result-linux-kernel
 git add .
 git commit -m "push" --signoff
-git branch -M 4.4
 git push https://$GITHUB_TOKEN@github.com/vcyzteen/result-linux-kernel.git 4.4
 
 ##----------------*****-----------------------------##
