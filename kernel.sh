@@ -48,24 +48,24 @@ KERNEL_DIR="$(pwd)"
 BASEDIR="$(basename "$KERNEL_DIR")"
 
 # The name of the Kernel, to name the ZIP
-ZIPNAME="azure"
+ZIPNAME="linux"
 
 # Build Author
 # Take care, it should be a universal and most probably, case-sensitive
-AUTHOR="Panchajanya1999"
+AUTHOR="vcyzteen"
 
 # Architecture
 ARCH=arm64
 
 # The name of the device for which the kernel is built
-MODEL="Redmi Note 7 Pro"
+MODEL="Asus Max Pro M1"
 
 # The codename of the device
-DEVICE="violet"
+DEVICE="X00TD"
 
 # The defconfig which should be used. Get it from config.gz from
 # your device or check source
-DEFCONFIG=vendor/violet-perf_defconfig
+DEFCONFIG=vcyzteen_defconfig
 
 # Specify compiler. 
 # 'clang' or 'gcc'
@@ -85,8 +85,8 @@ INCREMENTAL=1
 PTTG=1
 	if [ $PTTG = 1 ]
 	then
-		# Set Telegram Chat ID
-		CHATID="-1001231303646"
+		# Set Telegram Chat
+                CHATID=""
 	fi
 
 # Generate a full DEFCONFIG prior building. 1 is YES | 0 is NO(default)
@@ -97,7 +97,7 @@ FILES=Image.gz-dtb
 
 # Build dtbo.img (select this only if your source has support to building dtbo.img)
 # 1 is YES | 0 is NO(default)
-BUILD_DTBO=1
+BUILD_DTBO=0
 	if [ $BUILD_DTBO = 1 ]
 	then 
 		# Set this to your dtbo path. 
@@ -168,7 +168,6 @@ fi
 
 #Check Kernel Version
 KERVER=$(make kernelversion)
-
 
 # Set a commit head
 COMMIT_HEAD=$(git log --oneline -1)
