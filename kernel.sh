@@ -384,21 +384,24 @@ gen_zip() {
 	cd ..
 }
 
+push_to_github() {
+       cd "$KERNEL_DIR"
+       git clone https://github.com/$AUTHOR/result-linux-kernel.git
+       find "$KERNEL_DIR" -iname *.zip -exec mv {} "$KERNEL_DIR"/result-linux-kernel \;
+       cd "$KERNEL_DIR"/result-linux-kernel
+       git add .
+       git commit -m "push $DATE $COMMIT_HEAD" --signoff
+       git push https://$GITHUB_TOKEN@github.com/$AUTHOR/result-linux-kernel.git 4.4
+}
+
 clone
 exports
 build_kernel
+push_to_github
 
 if [ $LOG_DEBUG = "1" ]
 then
 	tg_post_build "error.log" "$CHATID" "Debug Mode Logs"
 fi
-
-cd "$KERNEL_DIR"
-git clone https://github.com/vcyzteen/result-linux-kernel.git
-find "$KERNEL_DIR" -iname *.zip -exec mv {} "$KERNEL_DIR"/result-linux-kernel \;
-cd "$KERNEL_DIR"/result-linux-kernel
-git add .
-git commit -m "push "$DATE" "$COMMIT_HEAD"" --signoff
-git push https://$GITHUB_TOKEN@github.com/vcyzteen/result-linux-kernel.git 4.4
 
 ##----------------*****-----------------------------##
