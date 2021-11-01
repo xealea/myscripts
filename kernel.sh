@@ -394,7 +394,7 @@ then
 fi
 
 mkdir repo
-mv "$ZIP_FINAL.zip" repo
+mv "$KERNEL_DIR"/Anykernel3/"$ZIP_FINAL.zip" repo
 cd repo
 git init
 git add .
