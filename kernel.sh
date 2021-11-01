@@ -60,8 +60,8 @@ ARCH=arm64
 # The name of the device for which the kernel is built
 MODEL="Asus Max Pro M1"
 
-# The codename of the device
-DEVICE="X00TD"
+# The name of zip kernel
+DEVICE="vcyz"
 
 # The defconfig which should be used. Get it from config.gz from
 # your device or check source
@@ -398,7 +398,7 @@ git clone https://github.com/vcyzteen/result-linux-kernel.git
 find "$KERNEL_DIR" -iname *.zip -exec mv {} "$KERNEL_DIR"/result-linux-kernel \;
 cd "$KERNEL_DIR"/result-linux-kernel
 git add .
-git commit -m "push" --signoff
+git commit -m "push "$DATE" "$COMMIT_HEAD"" --signoff
 git push https://$GITHUB_TOKEN@github.com/vcyzteen/result-linux-kernel.git 4.4
 
 ##----------------*****-----------------------------##
