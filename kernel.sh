@@ -182,8 +182,8 @@ DATE=$(TZ=Asia/Jakarta date +"%Y%m%d-%T")
 	if [ $COMPILER = "gcc" ]
 	then
 		msg "|| Cloning GCC 9.3.0 baremetal ||"
-		git clone --depth=1 https://github.com/Baka-Project/BakaGCC.git -b gcc-arm64-nonelf gcc64
-		git clone --depth=1 https://github.com/Baka-Project/BakaGCC.git -b gcc-arm-nonelf gcc32
+		git clone --depth=1 https://github.com/KudProject/aarch64-linux-android-4.9.git gcc64
+		git clone --depth=1 https://github.com/KudProject/arm-linux-androideabi-4.9.git gcc32
 		GCC64_DIR=$KERNEL_DIR/gcc64
 		GCC32_DIR=$KERNEL_DIR/gcc32
 	fi
@@ -218,7 +218,7 @@ exports() {
 		PATH=$TC_DIR/bin/:$PATH
 	elif [ $COMPILER = "gcc" ]
 	then
-		KBUILD_COMPILER_STRING=$("$GCC64_DIR"/bin/aarch64-linux-gnu-gcc --version | head -n 1)
+		KBUILD_COMPILER_STRING=$("$GCC64_DIR"/bin/aarch64-linux-android-gcc --version | head -n 1)
 		PATH=$GCC64_DIR/bin/:$GCC32_DIR/bin/:/usr/bin:$PATH
 	fi
 
@@ -295,12 +295,11 @@ build_kernel() {
 	elif [ $COMPILER = "gcc" ]
 	then
 		MAKE+=(
-			CROSS_COMPILE_ARM32=arm-linux-gnueabi \
-			CROSS_COMPILE=aarch64-linux-gnu- \
-			AR=aarch64-linux-gnu-ar \
+			CROSS_COMPILE_ARM32=arm-linux-androideabi \
+			CROSS_COMPILE=aarch64-linux-android- \
+			AR=aarch64-linux-android-ar \
 			OBJDUMP=aarch64-linux-gnu-objdump \
-			STRIP=aarch64-linux-gnu-strip \
-			LD=$LINKER
+			STRIP=aarch64-linux-android-strip
 		)
 	fi
 	
