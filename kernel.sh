@@ -390,7 +390,8 @@ push_to_github() {
        find "$KERNEL_DIR" -iname *signed.zip -exec mv {} "$KERNEL_DIR"/result-linux-kernel/sdm660/asus/X00T \;
        cd "$KERNEL_DIR"/result-linux-kernel
        git add .
-       git commit -m "push $DATE $COMMIT_HEAD" --signoff
+       git commit -m "PUSH IN: $DATE
+       LATEST COMMIT: $COMMIT_HEAD" --signoff
        git push https://$GITHUB_TOKEN@github.com/$AUTHOR/result-linux-kernel.git 4.4
 }
 
