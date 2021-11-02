@@ -386,8 +386,10 @@ gen_zip() {
 
 push_to_github() {
        cd "$KERNEL_DIR"
-       mkdir "$KERNEL_DIR"/result-linux-kernel/sdm660/asus/X00T
        git clone https://github.com/$AUTHOR/result-linux-kernel.git
+       mkdir "$KERNEL_DIR"/result-linux-kernel/sdm660
+       mkdir "$KERNEL_DIR"/result-linux-kernel/sdm660/asus
+       mkdir "$KERNEL_DIR"/result-linux-kernel/sdm660/asus/X00T
        find "$KERNEL_DIR" -iname *signed.zip -exec mv {} "$KERNEL_DIR"/result-linux-kernel/sdm660/asus/X00T \;
        cd "$KERNEL_DIR"/result-linux-kernel
        git add .
