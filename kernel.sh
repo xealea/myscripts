@@ -26,13 +26,13 @@ set -e
 # Function to show an informational message
 msg() {
 	echo
-    echo -e "\e[1;32m$*\e[0m"
-    echo
+	echo -e "\e[1;32m$*\e[0m"
+	echo
 }
 
 err() {
-    echo -e "\e[1;41m$*\e[0m"
-    exit 1
+	echo -e "\e[1;41m$*\e[0m"
+	exit 1
 }
 
 cdir() {
@@ -48,7 +48,7 @@ KERNEL_DIR="$(pwd)"
 BASEDIR="$(basename "$KERNEL_DIR")"
 
 # The name of the Kernel, to name the ZIP
-ZIPNAME="linux"
+ZIPNAME="Xea-X0#"
 
 # Build Author
 # Take care, it should be a universal and most probably, case-sensitive
@@ -60,23 +60,23 @@ ARCH=arm64
 # The name of the device for which the kernel is built
 MODEL="Asus Max Pro M1"
 
-# The name of zip kernel
-DEVICE="vcyz"
+# The codename of the device
+DEVICE="X00TD"
 
 # The defconfig which should be used. Get it from config.gz from
 # your device or check source
-DEFCONFIG=vcyzteen_defconfig
+DEFCONFIG=X00T_defconfig
 
 # Specify compiler. 
 # 'clang' or 'gcc'
-COMPILER=gcc
+COMPILER=clang
 
 # Build modules. 0 = NO | 1 = YES
 MODULES=0
 
 # Specify linker.
 # 'ld.lld'(default)
-LINKER=ld.bfd
+LINKER=ld.lld
 
 # Clean source prior building. 1 is NO(default) | 0 is YES
 INCREMENTAL=1
@@ -85,8 +85,8 @@ INCREMENTAL=1
 PTTG=1
 	if [ $PTTG = 1 ]
 	then
-		# Set Telegram Chat
-                CHATID=""
+		# Set Telegram Chat ID
+		CHATID="-1001721818658"
 	fi
 
 # Generate a full DEFCONFIG prior building. 1 is YES | 0 is NO(default)
@@ -97,7 +97,7 @@ FILES=Image.gz-dtb
 
 # Build dtbo.img (select this only if your source has support to building dtbo.img)
 # 1 is YES | 0 is NO(default)
-BUILD_DTBO=0
+BUILD_DTBO=1
 	if [ $BUILD_DTBO = 1 ]
 	then 
 		# Set this to your dtbo path. 
@@ -169,6 +169,7 @@ fi
 #Check Kernel Version
 KERVER=$(make kernelversion)
 
+
 # Set a commit head
 COMMIT_HEAD=$(git log --oneline -1)
 
@@ -182,16 +183,16 @@ DATE=$(TZ=Asia/Jakarta date +"%Y%m%d-%T")
 	if [ $COMPILER = "gcc" ]
 	then
 		msg "|| Cloning GCC 9.3.0 baremetal ||"
-		git clone --depth=1 https://github.com/KudProject/aarch64-linux-android-4.9.git gcc64
-		git clone --depth=1 https://github.com/KudProject/arm-linux-androideabi-4.9.git gcc32
+		git clone --depth=1 https://github.com/mvaisakh/gcc-arm64.git gcc64
+		git clone --depth=1 https://github.com/arter97/arm32-gcc.git gcc32
 		GCC64_DIR=$KERNEL_DIR/gcc64
 		GCC32_DIR=$KERNEL_DIR/gcc32
 	fi
 	
 	if [ $COMPILER = "clang" ]
 	then
-		msg "|| Cloning Clang-13 ||"
-		git clone --depth=1 https://github.com/kdrag0n/proton-clang.git clang-llvm
+		msg "|| Cloning Clang-14 ||"
+		git clone --depth=1 https://gitlab.com/Panchajanya1999/azure-clang.git clang-llvm
 		# Toolchain Directory defaults to clang-llvm
 		TC_DIR=$KERNEL_DIR/clang-llvm
 	fi
@@ -218,7 +219,7 @@ exports() {
 		PATH=$TC_DIR/bin/:$PATH
 	elif [ $COMPILER = "gcc" ]
 	then
-		KBUILD_COMPILER_STRING=$("$GCC64_DIR"/bin/aarch64-linux-android-gcc --version | head -n 1)
+		KBUILD_COMPILER_STRING=$("$GCC64_DIR"/bin/aarch64-elf-gcc --version | head -n 1)
 		PATH=$GCC64_DIR/bin/:$GCC32_DIR/bin/:/usr/bin:$PATH
 	fi
 
@@ -261,7 +262,7 @@ build_kernel() {
 	if [ $INCREMENTAL = 0 ]
 	then
 		msg "|| Cleaning Sources ||"
-		make clean && make mrproper && rm -rf out
+		make mrproper && rm -rf out
 	fi
 
 	if [ "$PTTG" = 1 ]
@@ -290,16 +291,21 @@ build_kernel() {
 			AR=llvm-ar \
 			OBJDUMP=llvm-objdump \
 			STRIP=llvm-strip \
+			NM=llvm-nm \
+			OBJCOPY=llvm-objcopy \
 			LD="$LINKER"
 		)
 	elif [ $COMPILER = "gcc" ]
 	then
 		MAKE+=(
-			CROSS_COMPILE_ARM32=arm-linux-androideabi \
-			CROSS_COMPILE=aarch64-linux-android- \
-			AR=aarch64-linux-android-ar \
-			OBJDUMP=aarch64-linux-gnu-objdump \
-			STRIP=aarch64-linux-android-strip
+			CROSS_COMPILE_ARM32=arm-eabi- \
+			CROSS_COMPILE=aarch64-elf- \
+			AR=aarch64-elf-ar \
+			OBJDUMP=aarch64-elf-objdump \
+			STRIP=aarch64-elf-strip \
+			NM=aarch64-elf-nm \
+			OBJCOPY=aarch64-elf-objcopy \
+			LD=aarch64-elf-$LINKER
 		)
 	fi
 	
@@ -310,8 +316,6 @@ build_kernel() {
 
 	msg "|| Started Compilation ||"
 	make -kj"$PROCS" O=out \
-		NM=llvm-nm \
-		OBJCOPY=llvm-objcopy \
 		V=$VERBOSE \
 		"${MAKE[@]}" 2>&1 | tee error.log
 	if [ $MODULES = "1" ]
@@ -384,21 +388,9 @@ gen_zip() {
 	cd ..
 }
 
-push_to_github() {
-       cd "$KERNEL_DIR"
-       git clone https://github.com/$AUTHOR/result-linux-kernel.git
-       find "$KERNEL_DIR" -iname *signed.zip -exec mv {} "$KERNEL_DIR"/result-linux-kernel/sdm660/asus/X00T \;
-       cd "$KERNEL_DIR"/result-linux-kernel
-       git add .
-       git commit -m "PUSH IN: $DATE
-       LATEST COMMIT: $COMMIT_HEAD" --signoff
-       git push https://$GITHUB_TOKEN@github.com/$AUTHOR/result-linux-kernel.git 4.4
-}
-
 clone
 exports
 build_kernel
-push_to_github
 
 if [ $LOG_DEBUG = "1" ]
 then
