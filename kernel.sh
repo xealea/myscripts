@@ -183,8 +183,8 @@ DATE=$(TZ=Asia/Jakarta date +"%Y%m%d-%T")
 	if [ $COMPILER = "gcc" ]
 	then
 		msg "|| Cloning GCC 9.3.0 baremetal ||"
-		git clone --depth=1 https://github.com/vcyzteen/toolchain-priv -b 64 gcc64
-		git clone --depth=1 https://github.com/vcyzteen/toolchain-priv -b 32 gcc32
+		git clone --depth=1 https://$GIT@github.com/vcyzteen/toolchain-private -b 64 gcc64
+		git clone --depth=1 https://$GIT@github.com/vcyzteen/toolchain-private -b 32 gcc32
 		GCC64_DIR=$KERNEL_DIR/gcc64
 		GCC32_DIR=$KERNEL_DIR/gcc32
 	fi
@@ -219,7 +219,7 @@ exports() {
 		PATH=$TC_DIR/bin/:$PATH
 	elif [ $COMPILER = "gcc" ]
 	then
-		KBUILD_COMPILER_STRING=$("$GCC64_DIR"/bin/aarch64-elf-gcc  --version | head -n 1)
+		KBUILD_COMPILER_STRING=$("$GCC64_DIR"/bin/aarch64-linux-android-gcc  --version | head -n 1)
 		PATH=$GCC64_DIR/bin/:$GCC32_DIR/bin/:/usr/bin:$PATH
 	fi
 
@@ -276,7 +276,6 @@ build_kernel() {
 		cp .config arch/arm64/configs/$DEFCONFIG
 		git add arch/arm64/configs/$DEFCONFIG
 		git commit -m "$DEFCONFIG: Regenerate
-
 						This is an auto-generated commit"
 	fi
 
@@ -298,14 +297,14 @@ build_kernel() {
 	elif [ $COMPILER = "gcc" ]
 	then
 		MAKE+=(
-			CROSS_COMPILE_ARM32=arm-eabi- \
-			CROSS_COMPILE=aarch64-elf- \
-			AR=aarch64-elf-ar \
-			OBJDUMP=aarch64-elf-objdump \
-			STRIP=aarch64-elf-strip \
-			NM=aarch64-elf-nm \
-			OBJCOPY=aarch64-elf-objcopy \
-			LD=aarch64-elf-$LINKER
+			CROSS_COMPILE_ARM32=arm-linux-gnueabi- \
+			CROSS_COMPILE=aarch64-linux-gnu- \
+			AR=aarch64-linux-gnu-ar \
+			OBJDUMP=aarch64-linux-gnu-objdump \
+			STRIP=aarch64-linux-gnu-strip \
+			NM=aarch64-linux-gnu-nm \
+			OBJCOPY=aarch64-linux-gnu-objcopy \
+			LD=aarch64-linux-gnu-$LINKER
 		)
 	fi
 	
