@@ -183,8 +183,8 @@ DATE=$(TZ=Asia/Jakarta date +"%Y%m%d-%T")
 	if [ $COMPILER = "gcc" ]
 	then
 		msg "|| Cloning GCC 9.3.0 baremetal ||"
-		git clone --depth=1 https://github.com/vcyzteen/toolchain-private -b 64 gcc64
-		git clone --depth=1 https://github.com/vcyzteen/toolchain-private -b 32 gcc32
+		git clone --depth=1 https://github.com/vcyzteen/toolchain-priv -b 64 gcc64
+		git clone --depth=1 https://github.com/vcyzteen/toolchain-priv -b 32 gcc32
 		GCC64_DIR=$KERNEL_DIR/gcc64
 		GCC32_DIR=$KERNEL_DIR/gcc32
 	fi
