@@ -342,7 +342,6 @@ gen_zip() {
 	cd ..
 }
 
-clone
 exports
 build_kernel
 
