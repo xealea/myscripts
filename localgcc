@@ -194,7 +194,7 @@ exports() {
 	BOT_BUILD_URL="https://api.telegram.org/bot$token/sendDocument"
 	PROCS=$(nproc --all)
 
-	export KBUILD_BUILD_USER ARCH SUBARCH PATH \
+	export KBUILD_BUILD_USER ARCH SUBARCH \
 		KBUILD_COMPILER_STRING BOT_MSG_URL \
 		BOT_BUILD_URL PROCS
 }
@@ -258,8 +258,7 @@ build_kernel() {
 	elif [ $COMPILER = "gcc" ]
 	then
 		MAKE+=(
-			CROSS_COMPILE_ARM32=arm-linux-androideabi- \
-			CROSS_COMPILE=aarch64-linux-android-
+			CROSS_COMPILE=aarch64-linux-gnu-
 		)
 	fi
 	
