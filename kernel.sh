@@ -298,9 +298,14 @@ build_kernel() {
 	elif [ $COMPILER = "gcc" ]
 	then
 		MAKE+=(
-                        CROSS_COMPILE=aarch64-linux-gnu- \
-			CROSS_COMPILE_ARM32=arm-linux-gnueabi- \
-			CC=gcc
+                        CROSS_COMPILE_ARM32=arm-linux-gnueabi- \
+			CROSS_COMPILE=aarch64-linux-gnu- \
+			AR=aarch64-linux-gnu-ar \
+			OBJDUMP=aarch64-linux-gnu-objdump \
+			STRIP=aarch64-linux-gnu-strip \
+			NM=aarch64-linux-gnu-nm \
+			OBJCOPY=aarch64-linux-gnu-objcopy \
+			LD=aarch64-linux-gnh-$LINKER
 		)
 	fi
 	
