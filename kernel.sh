@@ -48,24 +48,27 @@ KERNEL_DIR="$(pwd)"
 BASEDIR="$(basename "$KERNEL_DIR")"
 
 # The name of the Kernel, to name the ZIP
-ZIPNAME="Xea-X0#"
+ZIPNAME="Xea-X04"
 
 # Build Author
 # Take care, it should be a universal and most probably, case-sensitive
-AUTHOR="vcyzteen"
+AUTHOR="xealea"
 
 # Architecture
 ARCH=arm64
 
+# Main dir gcc
+MAIN_GCC=x86_64-pc-linux-gnu
+
 # The name of the device for which the kernel is built
-MODEL="Asus Max Pro M1"
+MODEL="Poco F3"
 
 # The codename of the device
-DEVICE="X00TD"
+DEVICE="ALIOTH"
 
 # The defconfig which should be used. Get it from config.gz from
 # your device or check source
-DEFCONFIG=X00T_defconfig
+DEFCONFIG=vendor/alioth_defconfig
 
 # Specify compiler. 
 # 'clang' or 'gcc'
@@ -178,15 +181,13 @@ DATE=$(TZ=Asia/Jakarta date +"%Y%m%d-%T")
 
 #Now Its time for other stuffs like cloning, exporting, etc
 
- clone() {
+clone() {
 	echo " "
 	if [ $COMPILER = "gcc" ]
 	then
-		msg "|| Cloning GCC 4.9 baremetal ||"
-		git clone --depth=1 https://github.com/KudProject/aarch64-linux-android-4.9.git gcc64
-		git clone --depth=1 https://github.com/KudProject/arm-linux-androideabi-4.9.git gcc32
-		GCC64_DIR=$KERNEL_DIR/gcc64
-		GCC32_DIR=$KERNEL_DIR/gcc32
+		msg "|| Cloning GCC xea-xo1 12.2.1 Baremetal ||"
+		git clone --depth=1 https://gitlab.com/xealea/x86-gcc-xo1.git gccx86
+		GCCX86_DIR=$KERNEL_DIR/gccx86
 	fi
 	
 	if [ $COMPILER = "clang" ]
@@ -198,7 +199,7 @@ DATE=$(TZ=Asia/Jakarta date +"%Y%m%d-%T")
 	fi
 
 	msg "|| Cloning Anykernel ||"
-	git clone --depth 1 --no-single-branch https://github.com/"$AUTHOR"/AnyKernel3.git -b 12
+	git clone --depth 1 --no-single-branch https://github.com/"$AUTHOR"/AnyKernel3.git -b xo4
 
 	if [ $BUILD_DTBO = 1 ]
 	then
@@ -219,8 +220,8 @@ exports() {
 		PATH=$TC_DIR/bin/:$PATH
 	elif [ $COMPILER = "gcc" ]
 	then
-		KBUILD_COMPILER_STRING=$("$GCC64_DIR"/bin/aarch64-linux-android-gcc --version | head -n 1)
-		PATH=$GCC64_DIR/bin/:$GCC32_DIR/bin/:/usr/bin:$PATH
+		KBUILD_COMPILER_STRING=$("$GCCX86_DIR"/"$MAIN_GCC"/bin/x86_64-pc-linux-gnu-gcc --version | head -n 1)
+		PATH=$GCCX86_DIR/$MAIN_GCC/bin/:/usr/bin:$PATH
 	fi
 
 	BOT_MSG_URL="https://api.telegram.org/bot$token/sendMessage"
@@ -297,14 +298,7 @@ build_kernel() {
 	elif [ $COMPILER = "gcc" ]
 	then
 		MAKE+=(
-			CROSS_COMPILE_ARM32=arm-linux-androideabi- \
-			CROSS_COMPILE=aarch64-linux-android- \
-			AR=aarch64-linux-android-ar \
-			OBJDUMP=aarch64-linux-android-objdump \
-			STRIP=aarch64-linux-android-strip \
-			NM=aarch64-linux-android-nm \
-			OBJCOPY=aarch64-linux-android-objcopy \
-			LD=aarch64-linux-android-$LINKER
+			CC=gcc
 		)
 	fi
 	
