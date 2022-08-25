@@ -305,7 +305,7 @@ build_kernel() {
 			STRIP=aarch64-linux-gnu-strip \
 			NM=aarch64-linux-gnu-nm \
 			OBJCOPY=aarch64-linux-gnu-objcopy \
-			LD=aarch64-linux-gnh-$LINKER
+			LD=aarch64-linux-gnu-$LINKER
 		)
 	fi
 	
