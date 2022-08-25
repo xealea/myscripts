@@ -57,9 +57,6 @@ AUTHOR="xealea"
 # Architecture
 ARCH=arm64
 
-# Main dir gcc
-MAIN_GCC=x86_64-pc-linux-gnu
-
 # The name of the device for which the kernel is built
 MODEL="Poco F3"
 
