@@ -186,8 +186,10 @@ clone() {
 	if [ $COMPILER = "gcc" ]
 	then
 		msg "|| Cloning GCC xea-xo1 12.2.1 Baremetal ||"
-		git clone --depth=1 https://gitlab.com/xealea/x86-gcc-xo1.git gccx86
-		GCCX86_DIR=$KERNEL_DIR/gccx86
+		git clone --depth=1 https://github.com/xealea/toolchain-priv -b arm64 gcc64
+                git clone --depth=1 https://github.com/xealea/toolchain-priv -b arm gcc32
+		GCC64_DIR=$KERNEL_DIR/gcc64
+		GCC32_DIR=$KERNEL_DIR/gcc32
 	fi
 	
 	if [ $COMPILER = "clang" ]
@@ -220,8 +222,8 @@ exports() {
 		PATH=$TC_DIR/bin/:$PATH
 	elif [ $COMPILER = "gcc" ]
 	then
-		KBUILD_COMPILER_STRING=$("$GCCX86_DIR"/"$MAIN_GCC"/bin/x86_64-pc-linux-gnu-gcc --version | head -n 1)
-		PATH=$GCCX86_DIR/$MAIN_GCC/bin/:/usr/bin:$PATH
+		KBUILD_COMPILER_STRING=$("$GCC64_DIR"/bin/aarch64-linux-gnu-gcc --version | head -n 1)
+		PATH=$GCC64_DIR/bin/:$GCC32_DIR/bin/:/usr/bin:$PATH
 	fi
 
 	BOT_MSG_URL="https://api.telegram.org/bot$token/sendMessage"
