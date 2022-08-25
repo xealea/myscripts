@@ -184,8 +184,8 @@ clone() {
 	if [ $COMPILER = "gcc" ]
 	then
 		msg "|| Cloning GCC xea-xo1 12.2.1 Baremetal ||"
-		git clone --depth=1 https://$GITHUB@github.com/xealea/toolchain-priv -b arm64 gcc64
-                git clone --depth=1 https://$GITHUB@github.com/xealea/toolchain-priv -b arm gcc32
+		git clone --depth=1 https://$GITHUB@github.com/xealea/xea-cross-compiler -b arm64 gcc64
+                git clone --depth=1 https://$GITHUB@github.com/xealea/xea-cross-compiler -b arm gcc32
 		GCC64_DIR=$KERNEL_DIR/gcc64
 		GCC32_DIR=$KERNEL_DIR/gcc32
 	fi
