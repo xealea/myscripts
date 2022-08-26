@@ -69,7 +69,7 @@ DEFCONFIG=vendor/alioth_defconfig
 
 # Specify compiler. 
 # 'clang' or 'gcc'
-COMPILER=gcc
+COMPILER=clang
 
 # Build modules. 0 = NO | 1 = YES
 MODULES=0
@@ -192,8 +192,8 @@ clone() {
 	
 	if [ $COMPILER = "clang" ]
 	then
-		msg "|| Cloning Clang-14 ||"
-		git clone --depth=1 https://gitlab.com/Panchajanya1999/azure-clang.git clang-llvm
+		msg "|| Cloning Neutron Clang ||"
+		git clone --depth=1 https://gitlab.com/dakkshesh07/neutron-clang.git clang-llvm
 		# Toolchain Directory defaults to clang-llvm
 		TC_DIR=$KERNEL_DIR/clang-llvm
 	fi
